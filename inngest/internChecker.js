@@ -31,7 +31,7 @@ async function fetchDataFromApi() {
 async function sendEmailNotification(previous, current, data) {
   try {
     const { rows } = await sql`SELECT * FROM SUBSCRIBER`
-    const emails = rows.map((row) => row.email)
+    const bccList = rows.map((row) => row.email).join(',')
     let transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
@@ -39,14 +39,14 @@ async function sendEmailNotification(previous, current, data) {
         pass: process.env.GMAIL_PWD,
       },
     })
-    const newComps = data.map((item) => item.fullname).join('<br/>')
+    const newComps = data.map((item) => '<li>' + item.fullname + '</li>')
     // Send mail with defined transport object
     const dif = current - previous
     let info = await transporter.sendMail({
       from: `"Intern Website Update Notification" <${process.env.GMAIL_USER}>`,
-      to: emails,
+      bcc: bccList,
       subject: `${dif} new internships added to the website!`,
-      html: `The number of internships on the website has increased from ${previous} to <strong>${current}</strong>!<br/>${newComps}`,
+      html: `The number of internships on the website has increased from ${previous} to <strong>${current}</strong>!<br/><ul>${newComps}<ul>`,
     })
 
     console.log('Email sent:', info.response)
