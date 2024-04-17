@@ -46,7 +46,7 @@ async function sendEmailNotification(previous, current, data) {
       from: `"Intern Website Update Notification" <${process.env.GMAIL_USER}>`,
       bcc: bccList,
       subject: `${dif} new internships added to the website!`,
-      html: `The number of internships on the website has increased from ${previous} to <strong>${current}</strong>!<br/><ul>${newComps}<ul>`,
+      html: `The number of internships on the website has increased from ${previous} to <strong>${current}</strong>!<br/><ul>${newComps}</ul>`,
     })
 
     console.log('Email sent:', info.response)
