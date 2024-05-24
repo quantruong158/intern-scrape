@@ -39,7 +39,7 @@ async function sendEmailNotification(previous, current, data) {
         pass: process.env.GMAIL_PWD,
       },
     })
-    const newComps = data.map((item) => '<li>' + item.fullname + '</li>')
+    const newComps = data.map((item) => '<li>' + item.fullname + '</li>').join('')
     // Send mail with defined transport object
     const dif = current - previous
     let info = await transporter.sendMail({
